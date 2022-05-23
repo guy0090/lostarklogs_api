@@ -43,6 +43,7 @@ export class LogRecordEntityObject {
   public id: string;
   public name: string;
   public class: string;
+  public gearScore: number;
   public isPlayer: boolean;
   public damageDealt: number;
   public damageTaken: number;
@@ -54,6 +55,7 @@ export class LogRecordEntityObject {
     // this.name = entity.name; Temporarily disabled for privacy
     this.class = entity.class;
     this.isPlayer = entity.isPlayer;
+    this.gearScore = entity.gearScore || 0;
     this.damageDealt = entity.damageDealt;
     this.damageTaken = entity.damageTaken;
     this.skills = entity.skills.map(skill => new LogRecordEntitySkillObject(skill));

@@ -18,6 +18,7 @@ export interface LogRecordEntity {
   name: string;
   class: string;
   isPlayer: boolean;
+  gearScore: number;
   damageDealt: number;
   damageTaken: number;
   skills: LogRecordEntitySkill[];
