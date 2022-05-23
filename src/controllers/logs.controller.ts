@@ -45,6 +45,24 @@ class LogsController {
       // next(error);
     }
   };
+
+  public getUserRecentLogs = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const logs: LogObject[] = await this.logService.getRecentLogsByCreator(req.user._id);
+      res.status(200).json(logs);
+    } catch (err) {
+      next(new Exception(500, 'Error getting logs'));
+    }
+  };
+
+  public getRecentLogs = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const logs: LogObject[] = await this.logService.getRecentLogs();
+      res.status(200).json(logs);
+    } catch (err) {
+      next(new Exception(500, 'Error getting logs'));
+    }
+  };
 }
 
 export default LogsController;

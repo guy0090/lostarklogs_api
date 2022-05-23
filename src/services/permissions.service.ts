@@ -1,3 +1,4 @@
+import { Exception } from '@/exceptions/Exception';
 import { Permissions } from '@/interfaces/permission.interface';
 import { Role } from '@/interfaces/role.interface';
 import permissionModel from '@/models/permission.model';
@@ -23,7 +24,7 @@ class PermissionsService {
 
       return createPermissions;
     } catch (err) {
-      throw new Error(err.message);
+      throw new Exception(500, err.message);
     }
   }
 
@@ -46,7 +47,7 @@ class PermissionsService {
 
       return updatePermissions;
     } catch (err) {
-      throw new Error(err.message);
+      throw new Exception(500, err.message);
     }
   }
 
@@ -66,18 +67,18 @@ class PermissionsService {
       const update = findPermissions.permissions.filter(permission => !removePermissions.includes(permission));
 
       // Set the new permissions to the previously filtered
-      const updatePermissions = await this.permissions.findByIdAndUpdate(userId, { $set: { permissions: update } });
+      const updatePermissions = await this.permissions.findByIdAndUpdate(userId, { $set: { permissions: Array.from(update) } });
       if (!updatePermissions) throw new Error('Error removing permissions');
 
       return updatePermissions;
     } catch (err) {
-      throw new Error(err.message);
+      throw new Exception(500, err.message);
     }
   }
 
   /**
    * Check if the user has the provided permission. Checks all user role permissions
-   *  as well as their own personal permissions.
+   * as well as their own personal permissions.
    *
    * @param userId The user's database ID
    * @param checkPermissions The permissions to check for
@@ -99,7 +100,7 @@ class PermissionsService {
 
       return checkPermissions.every(permission => userPermissions.has(permission));
     } catch (err) {
-      throw new Error(err.message);
+      throw new Exception(500, err.message);
     }
   }
 
@@ -124,7 +125,7 @@ class PermissionsService {
 
       return Array.from(userPermissions);
     } catch (err) {
-      throw err;
+      throw new Exception(500, err.message);
     }
   }
 
@@ -150,7 +151,7 @@ class PermissionsService {
       const allPerms = new Set([...perms]);
       return Array.from(allPerms);
     } catch (err) {
-      throw err;
+      throw new Exception(500, err.message);
     }
   }
 }

@@ -51,9 +51,9 @@ class LogsService {
    * @returns Logs between provided dates
    */
   public async getRecentLogs(
-    limit = 50,
-    begin = new Date(Date.now() - 1000 * 60 * 60),
-    end = new Date(),
+    limit = 10,
+    begin = +new Date(Date.now() - 1000 * 60 * 60 * 24),
+    end = +new Date(),
     extraFilters = undefined,
   ): Promise<LogObject[]> {
     try {
@@ -81,9 +81,9 @@ class LogsService {
    */
   public async getRecentLogsByCreator(
     userId: ObjectId,
-    limit = 50,
-    begin = new Date(Date.now() - 1000 * 60 * 60),
-    end = new Date(),
+    limit = 10,
+    begin = +new Date(Date.now() - 1000 * 60 * 60 * 24),
+    end = +new Date(),
     extraFilters = undefined,
   ): Promise<LogObject[]> {
     try {

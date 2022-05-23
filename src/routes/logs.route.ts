@@ -17,6 +17,8 @@ class LogsRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}/:id`, [limiterUsers, validationMiddleware(LogIdDTO, 'params')], this.logsController.getLog);
+    this.router.post(`${this.path}/recent`, [limiterUsers, apiKeyMiddleware('body', 'log.recents')], this.logsController.getUserRecentLogs);
+    this.router.post(`${this.path}/publicRecent`, limiterUsers, this.logsController.getRecentLogs);
     this.router.put(
       `${this.path}/upload`,
       [limiterUsers, validationMiddleware(LogUploadDTO, 'body'), apiKeyMiddleware('body', 'log.upload')],
