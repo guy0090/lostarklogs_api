@@ -2,6 +2,7 @@ import { Exception } from '@/exceptions/Exception';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { Log } from '@/interfaces/logs.interface';
 import { LogObject } from '@/objects/log.object';
+import { TimeRangeQuery } from '@/objects/util.object';
 import LogsService from '@/services/logs.service';
 import { NextFunction, Request, Response } from 'express';
 
@@ -48,7 +49,15 @@ class LogsController {
 
   public getUserRecentLogs = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const logs: LogObject[] = await this.logService.getRecentLogsByCreator(req.user._id);
+      let logs: LogObject[] = [];
+
+      const timeRange = req.body.range;
+      if (timeRange) {
+        const range = new TimeRangeQuery(timeRange.begin, timeRange.end);
+        logs = await this.logService.getRecentLogsByCreator(req.user._id, 10, range.begin, range.end);
+      } else {
+        logs = await this.logService.getRecentLogsByCreator(req.user._id);
+      }
       res.status(200).json(logs);
     } catch (err) {
       next(new Exception(500, 'Error getting logs'));

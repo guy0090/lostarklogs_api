@@ -128,6 +128,13 @@ class LogsService {
       throw new Exception(400, err.message);
     }
   }
+
+  public validateTimeRange(begin: number, end: number, maxRange = 604800000): boolean {
+    if ((begin && !end) || typeof begin !== 'number' || typeof end !== 'number' || begin > end || begin < 0 || end < 0 || end - begin > maxRange) {
+      return false;
+    }
+    return true;
+  }
 }
 
 export default LogsService;
